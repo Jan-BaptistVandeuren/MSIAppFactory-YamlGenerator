@@ -14,6 +14,8 @@ df = pd.read_excel('pipelines.xlsx')
 
 # Prepare the YAML content
 content = OrderedDict([
+    ('name', 'MSI App Factory'),
+    ('parameters',[]),
     ('variables', {
         'script_build': 'Scripts\\build.ps1',
     }),
@@ -46,6 +48,24 @@ for i, row in df.iterrows():
         ])),
         ('condition', f'eq(resources.pipeline.${{variables.{variable_prefix}}}.result, \'Succeeded\')'),
     ]))
+
+# Add a parameters section
+content['parameters'] = [
+    OrderedDict([
+        ('name', 'operationalMode'),
+        ('displayName', 'Select operational mode'),
+        ('type', 'string'),
+        ('default', 'Publish'),
+        ('values', ['Verify', 'Package', 'Publish']),
+    ]),
+    OrderedDict([
+        ('name', 'archiveMode'),
+        ('displayName', 'Archive published apps'),
+        ('type', 'string'),
+        ('default', 'Yes'),
+        ('values', ['Yes', 'No']),
+    ]),
+]
 
 # Write the YAML file
 with open('pipelines.yaml', 'w') as f:
