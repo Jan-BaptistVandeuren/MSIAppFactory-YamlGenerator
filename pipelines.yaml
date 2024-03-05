@@ -1,9 +1,9 @@
 variables:
   pipeline_1: Pipeline 1
-  pipeline_1JsonFile: Apps\\app1.json
+  pipeline_1AppFolderPath: Apps\\App1
   pipeline_1Source: Pipeline Source 1
   pipeline_2: Pipeline 2
-  pipeline_2JsonFile: Apps\\app2.json
+  pipeline_2AppFolderPath: Apps\\App2
   pipeline_2Source: Pipeline Source 2
   script_build: Scripts\build.ps1
 resources:
@@ -21,11 +21,11 @@ steps:
   inputs:
     targetType: filePath
     filePath: ${{ variables.script_build }}
-    arguments: -JsonFilePath "${ variables.pipeline_1JsonFile }"
+    arguments: -AppFolderPath "${ variables.pipeline_1AppFolderPath }"
   condition: eq(resources.pipeline.${variables.pipeline_1}.result, 'Succeeded')
 - task: ${ variables.pipeline_2 }
   inputs:
     targetType: filePath
     filePath: ${{ variables.script_build }}
-    arguments: -JsonFilePath "${ variables.pipeline_2JsonFile }"
+    arguments: -AppFolderPath "${ variables.pipeline_2AppFolderPath }"
   condition: eq(resources.pipeline.${variables.pipeline_2}.result, 'Succeeded')

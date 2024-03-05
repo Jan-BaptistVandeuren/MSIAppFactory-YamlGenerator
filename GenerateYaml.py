@@ -31,7 +31,7 @@ for i, row in df.iterrows():
     variable_prefix = f'pipeline_{i+1}'
     content['variables'][f'{variable_prefix}'] = row['pipeline']
     content['variables'][f'{variable_prefix}Source'] = row['pipelineSource']
-    content['variables'][f'{variable_prefix}JsonFile'] = row['jsonFile']
+    content['variables'][f'{variable_prefix}AppFolderPath'] = row['AppFolderPath']
     content['resources']['pipelines'].append(OrderedDict([
         ('pipeline', f'${{ variables.{variable_prefix} }}'),
         ('source', f'${{ variables.{variable_prefix}Source }}'),
@@ -42,7 +42,7 @@ for i, row in df.iterrows():
         ('inputs', OrderedDict([
             ('targetType', 'filePath'),
             ('filePath', '${{ variables.script_build }}'),
-            ('arguments', f'-JsonFilePath "${{ variables.{variable_prefix}JsonFile }}"'),
+            ('arguments', f'-AppFolderPath "${{ variables.{variable_prefix}AppFolderPath }}"'),
         ])),
         ('condition', f'eq(resources.pipeline.${{variables.{variable_prefix}}}.result, \'Succeeded\')'),
     ]))
